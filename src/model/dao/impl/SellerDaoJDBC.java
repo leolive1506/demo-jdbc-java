@@ -44,18 +44,8 @@ public class SellerDaoJDBC implements SellerDao {
 
       // check se veio algum objeto
       if (rs.next()) {
-        Department department = new Department(
-            rs.getInt("DepartmentId"),
-            rs.getString("DepName"));
-
-        Seller seller = new Seller(
-          rs.getInt("Id"),
-          rs.getString("Name"),
-          rs.getString("Email"),
-          rs.getDate("BirthDate"),
-          rs.getDouble("BaseSalary"),
-          department
-        );
+        Department department = instantiateDepartment(rs);
+        Seller seller = instantiateSeller(rs, department);
 
         return seller;
       }
@@ -79,6 +69,23 @@ public class SellerDaoJDBC implements SellerDao {
   public void update(Seller obj) {
     // TODO Auto-generated method stub
 
+  }
+
+  public Department instantiateDepartment(ResultSet rs) throws SQLException {
+    return new Department(
+        rs.getInt("DepartmentId"),
+        rs.getString("DepName"));
+  }
+
+  public Seller instantiateSeller(ResultSet rs, Department department) throws SQLException {
+    return new Seller(
+      rs.getInt("Id"),
+      rs.getString("Name"),
+      rs.getString("Email"),
+      rs.getDate("BirthDate"),
+      rs.getDouble("BaseSalary"),
+      department
+    );
   }
 
 }
